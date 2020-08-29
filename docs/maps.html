@@ -18,12 +18,19 @@
 </head>
 
 <body>
-    <h3>My Google Maps Demo</h3>
+    <h3 class="col s12 l12">Best Restaurant Finder</h3>
     <!--The div element for the map -->
-    <div id="map"></div>
-    <div id="zomato"></div>
-    <button class="waves-effect waves-light btn-small deep-purple lighten-1" type=" button " id="btn-locate ">Locate Me!</button>
+
+    <div class="valign-wrapper">
+        <div class="row valign-wrapper">
+            <div class="col s6 center-align" id="zomato">
+            </div>
+            <div class="col s6 center-align" id="map"></div>
+            <button class="waves-effect waves-light btn-small deep-purple lighten-1" type=" button " id="btn-locate ">Locate Me!</button>
+        </div>
+    </div>
 </body>
+
 
 <script>
     var map, infoWindow;
