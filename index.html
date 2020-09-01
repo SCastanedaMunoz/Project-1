@@ -29,7 +29,6 @@
     <!--The div element for the map -->
 
     <div class="container">
-
         <div class="row">
             <form class="col s12">
                 <div class="rown">
@@ -46,7 +45,7 @@
                         <label for="cuisines">Cuisines</label>
                     </div>
                 </div>
-                <div class="rown">
+                <div class="row">
                     <div class="input-field col s4">
                         <input placeholder="Restaurant, Take Out" id="type" type="text" class="validate">
                         <label for="type">Type</label>
@@ -60,6 +59,11 @@
                         <label for="distance">Distance(Miles)</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="waves-effect waves-light btn-small deep-purple lighten-1" type="button" id="btn-search">Search!</button>
+                    </div>
+                </div>
             </form>
         </div>
 
@@ -69,8 +73,6 @@
             </table>
             <div class="col s6 center-align" id="map"></div>
         </div>
-
-        <button class="waves-effect waves-light btn-small deep-purple lighten-1" type="button" id="btn-locate">Locate Me!</button>
     </div>
 
 </body>
@@ -125,7 +127,7 @@
 
             getRestaurantInfo("Austin");
 
-            $("#btn-locate").on("click ", function(event) {
+            $("#btn-search").on("click ", function(event) {
                 event.preventDefault();
 
                 // // Try HTML5 geolocation.
