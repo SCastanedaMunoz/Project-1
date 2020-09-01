@@ -1,0 +1,36 @@
+body {
+    color: #FFFAFF;
+    background-color: #0A2463;
+    text-align: center;
+}
+
+#btn-locate {}
+
+#map {
+    height: 600px;
+    width: 57.5%;
+    margin: 1.25%;
+}
+
+.input-field:hover {
+    color: #FFFAFF;
+    background-color: #D8315B
+}
+
+#info-rest {
+    height: 600px;
+    width: 37.5%;
+    margin: 1.25%;
+    background-color: #FFFAFF;
+    display: block;
+    overflow: auto;
+}
+
+.card {
+    color: black;
+}
+
+.form,
+.row {
+    margin-bottom: 0px;
+}
