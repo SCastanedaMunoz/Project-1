@@ -33,11 +33,11 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s4">
-                        <input placeholder="Austin" id="city_name" type="text" class="validate">
+                        <input placeholder="Austin" value="Austin" id="city_name" type="text" class="validate">
                         <label for="city_name">City Name</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="Chinese Food" id="query_word" type="text" class="validate">
+                        <input placeholder="Chinese Food" value="Chinese" id="query_word" type="text" class="validate">
                         <label for="query_word">Main Category</label>
                     </div>
                     <div class="input-field col s4">
@@ -47,15 +47,15 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s4">
-                        <input placeholder="Restaurant, Take Out" id="type" type="text" class="validate">
-                        <label for="type">Type</label>
+                        <input placeholder="Restaurant, Take Out" id="food_type" type="text" class="validate">
+                        <label for="food_type">Type</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="10" id="restaurant_count" type="number" class="validate">
-                        <label for="restaurant_count">Restaurant Count</label>
+                        <input placeholder="10" value="10" id="food_count" type="number" class="validate">
+                        <label for="food_count">Restaurant Count</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="10" id="distance" type="number" class="validate">
+                        <input placeholder="10" value="10" id="distance" type="number" class="validate">
                         <label for="distance">Distance(Miles)</label>
                     </div>
                 </div>
@@ -68,21 +68,19 @@
         </div>
 
         <div class="row">
-            <table class="col s6 center-align responsive-table" id="info-rest">
-                <tbody id="food-list"></tbody>
-            </table>
+            <div class="col s6 center-align responsive-table" id="info-rest"></div>
             <div class="col s6 center-align" id="map"></div>
         </div>
     </div>
-<br>
+    <br>
     <!-- Footer -->
     <footer>
-    <div class="footer-copyright pink">
-        <div class="container white-text">
-        Bright Falcon Inc. © Santiago Castaneda Munoz, Brett Boggs, Zachary Yanez
-        <a class="white-text text-lighten-4 right" href="#https://developers.zomato.com/api"> Zomato API</a>
+        <div class="footer-copyright pink">
+            <div class="container white-text">
+                Bright Falcon Inc. © Santiago Castaneda Munoz, Brett Boggs, Zachary Yanez
+                <a class="white-text text-lighten-4 right" href="#https://developers.zomato.com/api"> Zomato API</a>
+            </div>
         </div>
-      </div>
     </footer>
 
 
@@ -92,7 +90,8 @@
 <script>
     var map, infoWindow;
 
-    var lastRestaurantSearch;
+    var lastRestaurantSearch = [];
+    var userPosition;
     var mapMarkers = [];
     var lastCitySearch = "Austin";
     var lastEntityId = 0;
@@ -118,7 +117,7 @@
     }
 
     function createUserMarker() {
-        var userPosition = new google.maps.Marker({
+        userPosition = new google.maps.Marker({
             position: lastPos,
             map: map,
             icon: "assets/user-marker.png",
@@ -126,8 +125,6 @@
         })
 
         userPosition.setZIndex(100);
-
-        // mapMarkers.push(userPosition);
     }
 
     $(document).ready(function() {
@@ -136,47 +133,23 @@
 
         function initialize() {
 
-            getRestaurantInfo("Austin");
+            // getRestaurantInfo();
 
             $("#btn-search").on("click ", function(event) {
                 event.preventDefault();
-
-                // // Try HTML5 geolocation.
-                // if (navigator.geolocation) {
-                //     navigator.geolocation.getCurrentPosition(function(position) {
-
-                //         var pos = {
-                //             lat: position.coords.latitude,
-                //             lng: position.coords.longitude
-                //         };
-
-                //         console.log("Getting User GeoLocation " + pos);
-
-                //         infoWindow.setPosition(pos);
-                //         infoWindow.setContent('Location found.');
-                //         infoWindow.open(map);
-                //         map.setCenter(pos);
-                //     }, function() {
-                //         handleLocationError(true, infoWindow, map.getCenter());
-                //     });
-                // } else {
-                //     // Browser doesn't support Geolocation
-                //     handleLocationError(false, infoWindow, map.getCenter());
-                // }
-
-                // function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                //     infoWindow.setPosition(pos);
-                //     infoWindow.setContent(browserHasGeolocation ?
-                //         'Error: The Geolocation service failed.' :
-                //         'Error: Your browser doesn\'t support geolocation.');
-                //     infoWindow.open(map);
-                // }
-
-                getRestaurantInfo("Austin");
+                getRestaurantInfo();
             });
         }
 
-        function getRestaurantInfo(cityName) {
+        function getRestaurantInfo() {
+
+            var cityName = $("#city_name").val();
+
+            if (cityName == undefined || cityName == "") {
+                //todo add error modal
+                console.log("returning because unable to search");
+                return;
+            }
 
             var parsedCityName = encodeURIComponent(cityName);
 
@@ -214,12 +187,37 @@
 
         function getPopularRestaurants() {
 
-            // TODO Add Keyworkd from UI
-            var queryWord = encodeURIComponent("chinese food");
-            var radius = encodeURIComponent(1000);
-            var cuisines = encodeURIComponent("chinese,oriental,traditional");
-            var establishment_type = encodeURIComponent("restaurant,fast food");
-            var count = 10;
+            var userQueryWord = $("#query_word").val();
+
+            // TODO Add Validation
+
+            var queryWord = encodeURIComponent(userQueryWord);
+
+            var distance = $("#distance").val();
+
+            var distanceInMeters = (distance * 1.609344) * 1000;
+
+            // TODO Add Validation
+
+            var radius = encodeURIComponent(distanceInMeters);
+
+            var userCuisines = $("#cuisines").val();
+
+            var cuisines = encodeURIComponent(userCuisines);
+
+            // TODO Add Validation
+
+            var userType = $("#food_type").val();
+
+            var establishment_type = encodeURIComponent(userType);
+
+            // TODO Add Validation
+
+            var userCount = $("#food_count").val();
+
+            // TODO Add Validation
+
+            var count = userCount;
 
             var queryURL = `https://developers.zomato.com/api/v2.1/search?entity_id=${lastEntityId}&count=${count}&entity_type=city&q=${queryWord}&radius=${radius}&cuisines=${cuisines}&establishment_type=${establishment_type}&sort=rating&order=desc`;
 
@@ -241,6 +239,7 @@
         }
 
         function createRestaurantMarkers() {
+
             for (var i = 0; i < lastRestaurantSearch.length; i++) {
 
                 var restaurant = lastRestaurantSearch[i].restaurant;
@@ -256,11 +255,11 @@
                     position: foodPos,
                     map: map,
                     animation: google.maps.Animation.DROP,
-                    title : restaurant.name
+                    title: restaurant.name
                 });
 
                 foodMarker.addListener("click", function(event) {
-                    createRestaurantInfo(restaurant);
+                    createRestaurantInfo(this);
                 });
 
                 mapMarkers.push(foodMarker);
@@ -274,19 +273,21 @@
             }
 
             // List of all restaurants
-            var foodListElem = $("#food-list");
+            var foodListElem = $("#info-rest");
 
             $(foodListElem).empty();
 
             for (var i = 0; i < lastRestaurantSearch.length; i++) {
 
-                console.log(lastRestaurantSearch[i]);
-
                 var restaurant = lastRestaurantSearch[i].restaurant;
 
-                var cardElement = $("<tr>");
+                var newRow = $("<div>");
 
-                $(cardElement).addClass("card");
+                $(newRow).addClass("row");
+
+                var cardElement = $("<div>");
+
+                $(cardElement).addClass("card s12");
 
                 var cardImage = $("<div>");
 
@@ -298,7 +299,7 @@
 
                 var thumbNail = restaurant.thumb;
 
-                if(!thumbNail)
+                if (!thumbNail)
                     thumbNail = "assets/user-marker.png";
 
                 $(image).attr("src", thumbNail);
@@ -338,12 +339,87 @@
 
                 $(cardElement).append(cardImage, stackElement);
 
-                $(foodListElem).append(cardElement);
+                $(newRow).append(cardElement);
+
+                $(foodListElem).append(newRow);
             }
         }
 
-        function createRestaurantInfo(restaurant) {
-            // TODO FILL UI WITH THIS STUFF???? MAYBE
+        function createRestaurantInfo(marker) {
+
+            var restaurant = lastRestaurantSearch.find(restaurant => restaurant.restaurant.name == marker.title).restaurant;
+
+            // List of all restaurants
+            var foodListElem = $("#info-rest");
+
+            $(foodListElem).empty();
+
+            var newRow = $("<div>");
+
+            $(newRow).addClass("row");
+
+            var cardElement = $("<div>");
+
+            $(cardElement).addClass("card s12");
+
+            var cardImage = $("<div>");
+
+            $(cardImage).addClass("card-image");
+
+            var image = $("<img>");
+
+            $(image).addClass("thumbnail");
+
+            var thumbNail = restaurant.thumb;
+
+            if (!thumbNail)
+                thumbNail = "assets/user-marker.png";
+
+            $(image).attr("src", thumbNail);
+            $(image).attr("alt", `thumb-for-${restaurant.name}`);
+
+            var titleElement = $("<h6>");
+
+            $(titleElement).addClass("card-title");
+
+            $(titleElement).text(restaurant.name);
+
+            $(cardImage).append(image, titleElement);
+
+
+
+            var stackElement = $("<div>");
+
+            $(stackElement).addClass("card-stacked");
+
+            var actionElement = $("<div>");
+
+            $(actionElement).addClass("card-action");
+
+            // $(actionElement).text("VISIT!");
+
+            var linkElement = $("<a>");
+
+            // $(linkElement).attr("href", restaurant.url);
+
+            // $(linkElement).attr("target", "_blank");
+
+            $(linkElement).text("Go Back");
+
+            $(linkElement).on("click", function(event) {
+                createRestaurantList();
+            });
+
+            $(actionElement).append(linkElement);
+
+            $(stackElement).append(actionElement);
+
+            $(cardElement).append(cardImage, stackElement);
+
+            $(newRow).append(cardElement);
+
+            $(foodListElem).append(newRow);
+
         }
 
         function clearMarkers() {
@@ -352,6 +428,10 @@
             }
 
             mapMarkers = [];
+
+            userPosition.setMap(null);
+
+            userPosition = null;
         }
 
     });

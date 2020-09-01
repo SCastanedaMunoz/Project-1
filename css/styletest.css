@@ -1,9 +1,8 @@
 body {
-    color : #FFFAFF;
+    color: #FFFAFF;
     background-color: #0A2463;
     text-align: center;
 }
-
 
 #btn-locate {}
 
@@ -14,34 +13,24 @@ body {
 }
 
 .input-field:hover {
-
-    color:  #FFFAFF;
+    color: #FFFAFF;
     background-color: #D8315B
-    
 }
 
 #info-rest {
     height: 600px;
     width: 37.5%;
     margin: 1.25%;
-    background-color: #FFFAFF; 
-}
-
-tbody {
-
+    background-color: #FFFAFF;
     display: block;
-    height: 100%;
     overflow: auto;
 }
 
-.thumbnail {
-    width: 10%;
+.card {
+    color: black;
 }
 
-#food-list , .card {
-    /* margin: 5%; */
-}
-
-.form, .row {
+.form,
+.row {
     margin-bottom: 0px;
 }
