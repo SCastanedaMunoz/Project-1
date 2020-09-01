@@ -7,13 +7,13 @@ body {
 
 #map {
     height: 600px;
-    width: 62.5%;
+    width: 57.5%;
     margin: 1.25%;
 }
 
 #info-rest {
     height: 600px;
-    width: 32.5%;
+    width: 37.5%;
     margin: 1.25%;
     background-color: ivory;
 }
@@ -28,6 +28,10 @@ tbody {
     width: 10%;
 }
 
-.card.horizontal .card-image {
-    max-width: 25%;
+#food-list , .card {
+    /* margin: 5%; */
+}
+
+.form, .row {
+    margin-bottom: 0px;
 }

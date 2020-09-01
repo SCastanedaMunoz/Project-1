@@ -29,6 +29,40 @@
     <!--The div element for the map -->
 
     <div class="container">
+
+        <div class="row">
+            <form class="col s12">
+                <div class="rown">
+                    <div class="input-field col s4">
+                        <input placeholder="Austin" id="city_name" type="text" class="validate">
+                        <label for="city_name">City Name</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="Chinese Food" id="query_word" type="text" class="validate">
+                        <label for="query_word">Main Category</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="Chinese, Oriental, Traditional" id="cuisines" type="text" class="validate">
+                        <label for="cuisines">Cuisines</label>
+                    </div>
+                </div>
+                <div class="rown">
+                    <div class="input-field col s4">
+                        <input placeholder="Restaurant, Take Out" id="type" type="text" class="validate">
+                        <label for="type">Type</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="10" id="restaurant_count" type="number" class="validate">
+                        <label for="restaurant_count">Restaurant Count</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input placeholder="10" id="distance" type="number" class="validate">
+                        <label for="distance">Distance(Miles)</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="row">
             <table class="col s6 center-align responsive-table" id="info-rest">
                 <tbody id="food-list"></tbody>
@@ -38,10 +72,6 @@
 
         <button class="waves-effect waves-light btn-small deep-purple lighten-1" type="button" id="btn-locate">Locate Me!</button>
     </div>
-
-
-
-
 
 </body>
 
@@ -92,6 +122,8 @@
         initialize();
 
         function initialize() {
+
+            getRestaurantInfo("Austin");
 
             $("#btn-locate").on("click ", function(event) {
                 event.preventDefault();
@@ -231,38 +263,17 @@
             // List of all restaurants
             var foodListElem = $("#food-list");
 
+            $(foodListElem).empty();
+
             for (var i = 0; i < lastRestaurantSearch.length; i++) {
-
-
-                // <!-- <div class="card horizontal">
-                // <
-                // div class = "card-image" >
-                //     <
-                //     img src = "https://lorempixel.com/100/190/nature/6" >
-                //     <
-                //     /div> <
-                //     div class = "card-stacked" >
-                //     <
-                //     div class = "card-content" >
-                //     <
-                //     p > I am a very simple card.I am good at containing small bits of information. < /p> <
-                //     /div> <
-                //     div class = "card-action" >
-                //     <
-                //     a href = "#" > This is a link < /a> <
-                //     /div> <
-                //     /div> <
-                //     /div> -->
-
 
                 console.log(lastRestaurantSearch[i]);
 
                 var restaurant = lastRestaurantSearch[i].restaurant;
 
-                // Contains all info of current restaurant
                 var cardElement = $("<tr>");
 
-                $(cardElement).addClass("card horizontal");
+                $(cardElement).addClass("card");
 
                 var cardImage = $("<div>");
 
@@ -280,16 +291,17 @@
                 $(image).attr("src", thumbNail);
                 $(image).attr("alt", `thumb-for-${restaurant.name}`);
 
-                $(cardImage).append(image);
+                var titleElement = $("<h6>");
+
+                $(titleElement).addClass("card-title");
+
+                $(titleElement).text(restaurant.name);
+
+                $(cardImage).append(image, titleElement);
 
                 var stackElement = $("<div>");
 
                 $(stackElement).addClass("card-stacked");
-
-                // Name of Restaurant
-                var titleElement = $("<h6>");
-
-                $(titleElement).text(restaurant.name);
 
                 var addressElement = $("<p>");
 
@@ -309,12 +321,10 @@
 
                 $(actionElement).append(linkElement);
 
-                $(stackElement).append(titleElement, addressElement, actionElement);
+                $(stackElement).append(addressElement, actionElement);
 
-                // Add Name to Current Restaurant Holder
                 $(cardElement).append(cardImage, stackElement);
 
-                // Add Current Restaurant to List of All Restaurants
                 $(foodListElem).append(cardElement);
             }
         }
