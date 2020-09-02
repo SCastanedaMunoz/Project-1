@@ -2,6 +2,7 @@ body {
     color: #FFFAFF;
     background-color: #0A2463;
     text-align: center;
+    font-family: 'Voces', cursive;
 }
 
 #btn-locate {}
@@ -12,9 +13,19 @@ body {
     margin: 1.25%;
 }
 
-.input-field:hover {
-    color: #FFFAFF;
-    background-color: #D8315B
+.input-field label {
+    color: #3E92CC;
+}
+
+.input-field input:focus+label,
+.materialize-textarea:focus:not([readonly]) {
+    color: #3E92CC !important;
+}
+
+.row .input-field input:focus,
+.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #3E92CC !important;
+    box-shadow: 0 1px 0 0 #3E92CC !important
 }
 
 #info-rest {

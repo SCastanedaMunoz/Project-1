@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
 
     <!-- Compiled and minified CSS Materialize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -48,6 +48,7 @@
                 <div class="row">
                     <div class="input-field col s4">
                         <input placeholder="Restaurant, Take Out" id="food_type" type="text" class="validate">
+
                         <label for="food_type">Type</label>
                     </div>
                     <div class="input-field col s4">
@@ -301,7 +302,7 @@
                 var thumbNail = restaurant.thumb;
 
                 if (!thumbNail)
-                    thumbNail = "assets/user-marker.png";
+                    thumbNail = "assets/projectplaceholder.png";
 
                 $(image).attr("src", thumbNail);
                 $(image).attr("alt", `thumb-for-${restaurant.name}`);
@@ -374,7 +375,7 @@
             var thumbNail = restaurant.thumb;
 
             if (!thumbNail)
-                thumbNail = "assets/user-marker.png";
+                thumbNail = "assets/projectplaceholder.png";
 
             $(image).attr("src", thumbNail);
             $(image).attr("alt", `thumb-for-${restaurant.name}`);
