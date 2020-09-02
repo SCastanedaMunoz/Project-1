@@ -255,7 +255,8 @@
                     position: foodPos,
                     map: map,
                     animation: google.maps.Animation.DROP,
-                    title: restaurant.name
+                    title: restaurant.name, 
+                    markerRestaurant : restaurant
                 });
 
                 foodMarker.addListener("click", function(event) {
@@ -347,7 +348,7 @@
 
         function createRestaurantInfo(marker) {
 
-            var restaurant = lastRestaurantSearch.find(restaurant => restaurant.restaurant.name == marker.title).restaurant;
+            var restaurant = marker.markerRestaurant;
 
             // List of all restaurants
             var foodListElem = $("#info-rest");
@@ -385,7 +386,6 @@
             $(titleElement).text(restaurant.name);
 
             $(cardImage).append(image, titleElement);
-
 
 
             var stackElement = $("<div>");
