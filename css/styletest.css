@@ -75,3 +75,16 @@ input.valid[type=text]:not(.browser-default) {
 h3 {
     font-weight: bolder;
 }
+
+.card-stacked, p {
+    margin : 1%;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating), .see-more{
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.card-title {
+    text-shadow: 2px 2px 4px #000000;
+}

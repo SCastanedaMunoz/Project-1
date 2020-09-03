@@ -16,6 +16,9 @@
     <!-- Compiled and minified JavaScript Materialize-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/styletest.css">
 
@@ -119,7 +122,7 @@
                 lat: lastPos.lat,
                 lng: lastPos.lng
             },
-            zoom: 10
+            zoom: 12
         });
 
         createUserMarker();
@@ -267,11 +270,10 @@
                     map: map,
                     animation: google.maps.Animation.DROP,
                     title: restaurant.name, 
-                    markerRestaurant : restaurant
                 });
 
                 foodMarker.addListener("click", function(event) {
-                    createRestaurantInfo(this);
+                    createRestaurantInfo(this.title);
                 });
 
                 mapMarkers.push(foodMarker);
@@ -290,7 +292,6 @@
             $(foodListElem).empty();
 
             for (var i = 0; i < lastRestaurantSearch.length; i++) {
-
                 var restaurant = lastRestaurantSearch[i].restaurant;
 
                 var newRow = $("<div>");
@@ -321,7 +322,10 @@
 
                 $(titleElement).addClass("card-title");
 
-                $(titleElement).text(restaurant.name);
+                $(titleElement).append(restaurant.name);
+                $(titleElement).append(" ");
+                $(titleElement).append(createIcon("star"));
+                $(titleElement).append(`${restaurant.user_rating.aggregate_rating}`);
 
                 $(cardImage).append(image, titleElement);
 
@@ -329,25 +333,42 @@
 
                 $(stackElement).addClass("card-stacked");
 
-                var addressElement = $("<p>");
+                $(stackElement).append(createCardElement("map-marker", restaurant.location.address));
 
-                $(addressElement).text(restaurant.location.address);
+                $(stackElement).append(createCardElement("phone", restaurant.phone_numbers));
+
+                $(stackElement).append(createCardElement("cutlery", restaurant.cuisines));
+
+                var priceRange = $("<p>");
+                
+                for(var j = 0; j < restaurant.price_range; j++)
+                    $(priceRange).append(createIcon("usd"));
+
+                $(stackElement).append(priceRange);
 
                 var actionElement = $("<div>");
 
                 $(actionElement).addClass("card-action");
 
-                var linkElement = $("<a>");
+                var visitLink = $("<a>");
 
-                $(linkElement).attr("href", restaurant.url);
+                $(visitLink).attr("href", restaurant.url);
 
-                $(linkElement).attr("target", "_blank");
+                $(visitLink).attr("target", "_blank");
 
-                $(linkElement).text("Visit!");
+                $(visitLink).text("Visit!");
 
-                $(actionElement).append(linkElement);
+                var seeMoreLink = $("<a>");
 
-                $(stackElement).append(addressElement, actionElement);
+                $(seeMoreLink).addClass("see-more");
+
+                $(seeMoreLink).data("rest-name", restaurant.name);
+
+                $(seeMoreLink).text("See More");
+
+                $(actionElement).append(visitLink, seeMoreLink);
+
+                $(stackElement).append(actionElement);
 
                 $(cardElement).append(cardImage, stackElement);
 
@@ -355,11 +376,17 @@
 
                 $(foodListElem).append(newRow);
             }
+
+            $(".see-more").on("click", function(event) {
+                event.preventDefault();
+                var restaurantName = $(this).data("rest-name");
+                createRestaurantInfo(restaurantName);
+            });
         }
 
-        function createRestaurantInfo(marker) {
+        function createRestaurantInfo(restaurantName) {
 
-            var restaurant = marker.markerRestaurant;
+            var restaurant = lastRestaurantSearch.find(rest => rest.restaurant.name == restaurantName).restaurant;
 
             // List of all restaurants
             var foodListElem = $("#info-rest");
@@ -397,7 +424,6 @@
             $(titleElement).text(restaurant.name);
 
             $(cardImage).append(image, titleElement);
-
 
             var stackElement = $("<div>");
 
@@ -445,6 +471,21 @@
             userPosition = null;
         }
 
+        function createCardElement(iconName, value) {
+            var newCardElement = $("<p>");
+            $(newCardElement).append(createIcon(iconName));
+            $(newCardElement).append(" ");
+            $(newCardElement).append(value);
+
+            return newCardElement;
+        }
+
+        function createIcon(iconName) {
+            var newIcon = $("<i>");
+            $(newIcon).addClass(`fa fa-${iconName}`);
+            $(newIcon).attr("aria-hidden", true);
+            return newIcon;
+        }
     });
 </script>
 
