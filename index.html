@@ -7,6 +7,9 @@
     <title>Map</title>
     <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
 
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <!-- Compiled and minified CSS Materialize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -16,16 +19,13 @@
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="css/styletest.css">
 
-    <!-- JQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
     <!-- Google Maps API -->
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI0JkCmRsmKDi_N_SPzDdFfOUizXZdd-Q&callback=initMap"></script>
 
 </head>
 
 <body>
-    <h3 class="header">Best Restaurant Finder</h3>
+    <h3 class="header">BEST RESTAURANT FINDER</h3>
     <!--The div element for the map -->
 
     <div class="container">
@@ -33,15 +33,15 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s4">
-                        <input placeholder="Austin" value="Austin" id="city_name" type="text" class="validate">
+                        <input placeholder="Austin" id="city_name" type="text" class="validate">
                         <label for="city_name">City Name</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="Chinese Food" value="Chinese" id="query_word" type="text" class="validate">
+                        <input placeholder="Asian" id="query_word" type="text" class="validate">
                         <label for="query_word">Main Category</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="Chinese, Oriental, Traditional" id="cuisines" type="text" class="validate">
+                        <input placeholder="Traditional, Homemade" id="cuisines" type="text" class="validate">
                         <label for="cuisines">Cuisines</label>
                     </div>
                 </div>
@@ -52,11 +52,21 @@
                         <label for="food_type">Type</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="10" value="10" id="food_count" type="number" class="validate">
+                        <select id="food_count">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
                         <label for="food_count">Restaurant Count</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="10" value="10" id="distance" type="number" class="validate">
+                        <select id="distance">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
                         <label for="distance">Distance(Miles)</label>
                     </div>
                 </div>
@@ -74,16 +84,16 @@
         </div>
     </div>
     <br>
+
     <!-- Footer -->
     <footer>
         <div class="footer-copyright pink">
             <div class="container white-text">
-                Bright Falcon Inc. © Santiago Castaneda Munoz, Brett Boggs, Zachary Yanez
+                Bright Falcons Inc. © Santiago Castaneda Munoz, Brett Boggs, Zachary Yanez
                 <a class="white-text text-lighten-4 right" href="#https://developers.zomato.com/api"> Zomato API</a>
             </div>
         </div>
     </footer>
-
 
 </body>
 
@@ -134,7 +144,7 @@
 
         function initialize() {
 
-            // getRestaurantInfo();
+            $('select').formSelect();
 
             $("#btn-search").on("click ", function(event) {
                 event.preventDefault();
