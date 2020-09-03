@@ -5,8 +5,6 @@ body {
     font-family: 'Voces', cursive;
 }
 
-#btn-locate {}
-
 #map {
     height: 600px;
     width: 57.5%;
@@ -44,4 +42,36 @@ body {
 .form,
 .row {
     margin-bottom: 0px;
+}
+
+.input-field,
+input {
+    color: white;
+    font-weight: bolder;
+}
+
+::-webkit-input-placeholder {
+    /* Edge */
+    color: white;
+    opacity: .625;
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+    opacity: .625;
+}
+
+::placeholder {
+    color: white;
+    opacity: .625;
+}
+
+input.valid[type=text]:not(.browser-default) {
+    border-bottom: 1px solid #3E92CC;
+    box-shadow: 0 1px 0 0 #3E92CC;
+}
+
+h3 {
+    font-weight: bolder;
 }
