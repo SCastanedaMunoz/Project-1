@@ -72,11 +72,6 @@ input.valid[type=text]:not(.browser-default) {
     box-shadow: 0 1px 0 0 #3E92CC;
 }
 
-/* icon prefix focus color */
-.input-field .prefix.active {
-color: #3E92CC;
-}
-
 h3 {
     font-weight: bolder;
 }
@@ -92,16 +87,4 @@ h3 {
 
 .card-title {
     text-shadow: 2px 2px 4px #000000;
-}
-
-.input-field .prefix ~ label, .input-field .prefix ~ .validate ~ label {
-    margin-left: .75em;
-}
-
-#modal-header{
-    color: black;
-}
-
-#modal-content {
-    color: black;
 }
