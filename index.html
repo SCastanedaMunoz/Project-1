@@ -16,6 +16,8 @@
     <!-- Compiled and minified JavaScript Materialize-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -36,26 +38,29 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s4">
-                        <input placeholder="Austin" id="city_name" type="text" class="validate">
-                        <label for="city_name">City Name</label>
+                        <i class="material-icons prefix">location_city</i>
+                        <input placeholder="Austin" id="city_name" type="text" class="validate tooltipped" data-position="bottom" data-tooltip="Location for your search! *required*">
+                        <label  for="city_name_icon">City</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="Asian" id="query_word" type="text" class="validate">
+                        <i class="material-icons prefix">restaurant</i>
+                        <input placeholder="Asian" id="query_word" type="text" class="validate tooltipped" data-position="bottom" data-tooltip="Main identifier for your search">
                         <label for="query_word">Main Category</label>
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="Traditional, Homemade" id="cuisines" type="text" class="validate">
+                        <i class="material-icons prefix">restaurant_menu</i>
+                        <input placeholder="Traditional, Homemade" id="cuisines" type="text" class="validate tooltipped" data-position="bottom" data-tooltip="What kind of food? (comma separated values)"> 
                         <label for="cuisines">Cuisines</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s4">
-                        <input placeholder="Restaurant, Take Out" id="food_type" type="text" class="validate">
-
+                        <i class="material-icons prefix">access_time</i>
+                        <input placeholder="Restaurant, Take Out" id="food_type" type="text" class="validate tooltipped" data-position="bottom" data-tooltip="What kind of place? (comma separated values)">
                         <label for="food_type">Type</label>
                     </div>
-                    <div class="input-field col s4">
-                        <select id="food_count">
+                    <div class="input-field col s4" >
+                        <select id="food_count" class="tooltipped" data-position="bottom" data-tooltip="How many places?">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -63,8 +68,9 @@
                         </select>
                         <label for="food_count">Restaurant Count</label>
                     </div>
+
                     <div class="input-field col s4">
-                        <select id="distance">
+                        <select id="distance"  class="tooltipped" data-position="bottom" data-tooltip="How far away from your location?">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -87,6 +93,17 @@
         </div>
     </div>
     <br>
+
+    <!-- Modal Structure -->
+    <div id="modal-message" class="modal">
+        <div class="modal-content">
+        <h4 id="modal-header">Error Header</h4>
+        <p id="modal-content">A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -146,8 +163,9 @@
         initialize();
 
         function initialize() {
-
+            $('.modal').modal();
             $('select').formSelect();
+            $('.tooltipped').tooltip();
 
             $("#btn-search").on("click ", function(event) {
                 event.preventDefault();
@@ -160,8 +178,7 @@
             var cityName = $("#city_name").val();
 
             if (cityName == undefined || cityName == "") {
-                //todo add error modal
-                console.log("returning because unable to search");
+                showModal("Unable to Conduct Search", "A city name must be provided to conduct a search!");
                 return;
             }
 
@@ -180,9 +197,16 @@
                 }
             }).then(function(response) {
 
+                var locationSuggestions = response.location_suggestions.length;
+
+                if(locationSuggestions == 0) {
+                    showModal("No Results Found!", "We were unable to find good results for your search, try adding more descriptive parameters to the search as well as writting a clear city name.");
+                    return;
+                }
+
                 clearMarkers();
 
-                var mainSuggestion = response.location_suggestions[0];
+                var mainSuggestion = locationSuggestions[0];
 
                 lastPos = {
                     lat: mainSuggestion.latitude,
@@ -485,6 +509,12 @@
             $(newIcon).addClass(`fa fa-${iconName}`);
             $(newIcon).attr("aria-hidden", true);
             return newIcon;
+        }
+
+        function showModal(header, content){
+            $("#modal-header").text(header);
+            $("#modal-content").text(content);
+            $("#modal-message").modal('open');
         }
     });
 </script>
