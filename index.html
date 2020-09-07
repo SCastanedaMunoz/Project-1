@@ -121,19 +121,31 @@
 <script>
     var map, infoWindow;
 
-    var lastRestaurantSearch = [];
-    var userPosition;
-    var mapMarkers = [];
-    var lastCitySearch = "Austin";
-    var lastEntityId = 0;
+    var appData = {
+        lastCityName : "",
+    };
+
     var lastPos = {
         lat: 30.266748,
         lng: -97.74176
     };
 
+    var lastRestaurantSearch = [];
+    var lastEntityId = 0;
+    var mapMarkers = [];
+    var userPosition;
+    var storageKey = "project_1_last_city_name";
+
     const zomatoApiKey = "f0ebb130a10a55db4fc869102e19af66";
 
     function initMap() {
+
+        var tempData = localStorage.getItem(storageKey);
+
+        if(tempData) {
+            appData = JSON.parse(tempData);
+        }
+
         map = new google.maps.Map(document.getElementById('map'), {
             center: {
                 lat: lastPos.lat,
@@ -163,24 +175,29 @@
         initialize();
 
         function initialize() {
+
+            if(appData.lastCityName)
+                getCityByName(appData.lastCityName);
+
             $('.modal').modal();
             $('select').formSelect();
             $('.tooltipped').tooltip();
 
             $("#btn-search").on("click ", function(event) {
                 event.preventDefault();
-                getRestaurantInfo();
+                
+                var cityName = $("#city_name").val();
+
+                if (cityName == undefined || cityName == "") {
+                    showModal("Unable to Conduct Search", "A city name must be provided to conduct a search!");
+                    return;
+                }
+
+                getCityByName(cityName);
             });
         }
 
-        function getRestaurantInfo() {
-
-            var cityName = $("#city_name").val();
-
-            if (cityName == undefined || cityName == "") {
-                showModal("Unable to Conduct Search", "A city name must be provided to conduct a search!");
-                return;
-            }
+        function getCityByName(cityName) {
 
             var parsedCityName = encodeURIComponent(cityName);
 
@@ -196,6 +213,7 @@
                     "user-key": zomatoApiKey
                 }
             }).then(function(response) {
+                appData.lastCityName = cityName;
 
                 var locationSuggestions = response.location_suggestions.length;
 
@@ -270,6 +288,8 @@
                 }
             }).then(function(response) {
                 lastRestaurantSearch = response.restaurants;
+
+                localStorage.setItem(storageKey, JSON.stringify(appData));
 
                 createRestaurantList();
                 createRestaurantMarkers();
