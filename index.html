@@ -376,11 +376,8 @@
                 var stackElement = $("<div>");
 
                 $(stackElement).addClass("card-stacked");
-
                 $(stackElement).append(createCardElement("map-marker", restaurant.location.address));
-
                 $(stackElement).append(createCardElement("phone", restaurant.phone_numbers));
-
                 $(stackElement).append(createCardElement("cutlery", restaurant.cuisines));
 
                 var priceRange = $("<p>");
@@ -397,15 +394,12 @@
                 var visitLink = $("<a>");
 
                 $(visitLink).attr("href", restaurant.url);
-
                 $(visitLink).attr("target", "_blank");
-
                 $(visitLink).text("Visit!");
 
                 var seeMoreLink = $("<a>");
 
                 $(seeMoreLink).addClass("see-more");
-
                 $(seeMoreLink).data("rest-name", restaurant.name);
 
                 $(seeMoreLink).text("See More");
@@ -432,7 +426,8 @@
 
             var restaurant = lastRestaurantSearch.find(rest => rest.restaurant.name == restaurantName).restaurant;
 
-            // List of all restaurants
+            console.log(restaurant);
+
             var foodListElem = $("#info-rest");
 
             $(foodListElem).empty();
@@ -465,7 +460,10 @@
 
             $(titleElement).addClass("card-title");
 
-            $(titleElement).text(restaurant.name);
+            $(titleElement).append(restaurant.name);
+            $(titleElement).append(" ");
+            $(titleElement).append(createIcon("star"));
+            $(titleElement).append(`${restaurant.user_rating.aggregate_rating}`);
 
             $(cardImage).append(image, titleElement);
 
@@ -473,25 +471,62 @@
 
             $(stackElement).addClass("card-stacked");
 
+            $(stackElement).append(createCardElement("map-marker", restaurant.location.address));
+            var priceRange = $("<p>");
+                
+            for(var j = 0; j < restaurant.price_range; j++)
+                $(priceRange).append(createIcon("usd"));
+
+            $(stackElement).append(priceRange);
+
+            $(stackElement).append(createCardElement("phone", restaurant.phone_numbers));
+            $(stackElement).append(createCardElement("cutlery", restaurant.cuisines));
+            $(stackElement).append(createCardElement("clock-o", restaurant.timings));
+
+            var imagesLinkHolder = $("<p>");
+            var imagesLink = $("<a>");
+            $(imagesLink).attr("href", restaurant.photos_url);
+            $(imagesLink).attr("target", "_blank");
+            $(imagesLink).text("Photo Gallery");
+            $(imagesLinkHolder).append(imagesLink);
+
+            var menuLinkHolder = $("<p>");
+            var menuLink = $("<a>");
+            $(menuLink).attr("href", restaurant.menu_url);
+            $(menuLink).attr("target", "_blank");
+            $(menuLink).text("Online Menu");
+            $(menuLinkHolder).append(menuLink);
+
+            $(stackElement).append(imagesLinkHolder, menuLinkHolder);
+
+            var highlightsHolder = $("<p>");
+
+            var highlightsContent = restaurant.highlights.join(", ");
+
+            console.log(highlightsContent);
+
+            $(highlightsHolder).text(highlightsContent);
+            $(stackElement).append(highlightsHolder);
+
             var actionElement = $("<div>");
 
             $(actionElement).addClass("card-action");
 
-            // $(actionElement).text("VISIT!");
+            var visitLink = $("<a>");
 
-            var linkElement = $("<a>");
+            $(visitLink).attr("href", restaurant.url);
+            $(visitLink).attr("target", "_blank");
+            $(visitLink).text("Visit!");
 
-            // $(linkElement).attr("href", restaurant.url);
+            var goBackLink = $("<a>");
 
-            // $(linkElement).attr("target", "_blank");
+            $(goBackLink).text("Go Back");
 
-            $(linkElement).text("Go Back");
-
-            $(linkElement).on("click", function(event) {
+            $(goBackLink).on("click", function(event) {
                 createRestaurantList();
             });
 
-            $(actionElement).append(linkElement);
+            $(actionElement).append(visitLink, goBackLink);
 
             $(stackElement).append(actionElement);
 
@@ -500,7 +535,6 @@
             $(newRow).append(cardElement);
 
             $(foodListElem).append(newRow);
-
         }
 
         function clearMarkers() {
