@@ -1,12 +1,12 @@
 var map, infoWindow;
 
 var appData = {
-    lastCityName : "",
-    lastRestCount : 0,
-    lastMileCount : 0,
-    lastQueryWord : "",
-    lastCuisines : "",
-    lastType : "",
+    lastCityName: "",
+    lastRestCount: 0,
+    lastMileCount: 0,
+    lastQueryWord: "",
+    lastCuisines: "",
+    lastType: "",
 };
 
 var lastPos = {
@@ -26,7 +26,7 @@ function initMap() {
 
     var tempData = localStorage.getItem(storageKey);
 
-    if(tempData) {
+    if (tempData) {
         appData = JSON.parse(tempData);
     }
 
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
     function initialize() {
 
-        if(appData.lastCityName) {
+        if (appData.lastCityName) {
             $("#city_name").val(appData.lastCityName);
             $("#query_word").val(appData.lastQueryWord);
             $("#distance").val(appData.lastMileCount);
@@ -75,7 +75,7 @@ $(document).ready(function() {
 
         $("#btn-search").on("click ", function(event) {
             event.preventDefault();
-            
+
             var cityName = $("#city_name").val();
 
             if (cityName == undefined || cityName == "") {
@@ -107,7 +107,7 @@ $(document).ready(function() {
 
             var locationSuggestions = response.location_suggestions.length;
 
-            if(locationSuggestions == 0) {
+            if (locationSuggestions == 0) {
                 showModal("No Results Found!", "We were unable to find good results for your search, try adding more descriptive parameters to the search as well as writting a clear city name.");
                 return;
             }
@@ -138,7 +138,7 @@ $(document).ready(function() {
         appData.lastMileCount = $("#distance").val();
 
         var distanceInMeters = (appData.lastMileCount * 1.609344) * 1000;
-        
+
         appData.lastCuisines = $("#cuisines").val();
 
         appData.lastType = $("#food_type").val();
@@ -151,7 +151,7 @@ $(document).ready(function() {
 
         $.ajax({
             method: "GET",
-            crossDomain: true, 
+            crossDomain: true,
             url: queryURL,
             dataType: "json",
             async: true,
@@ -182,7 +182,7 @@ $(document).ready(function() {
                 position: foodPos,
                 map: map,
                 animation: google.maps.Animation.DROP,
-                title: restaurant.name, 
+                title: restaurant.name,
             });
 
             foodMarker.addListener("click", function(event) {
@@ -248,8 +248,8 @@ $(document).ready(function() {
             $(stackElement).append(createCardElement("cutlery", restaurant.cuisines));
 
             var priceRange = $("<p>");
-            
-            for(var j = 0; j < restaurant.price_range; j++)
+
+            for (var j = 0; j < restaurant.price_range; j++)
                 $(priceRange).append(createIcon("usd"));
 
             $(stackElement).append(priceRange);
@@ -338,8 +338,8 @@ $(document).ready(function() {
 
         $(stackElement).append(createCardElement("map-marker", restaurant.location.address));
         var priceRange = $("<p>");
-            
-        for(var j = 0; j < restaurant.price_range; j++)
+
+        for (var j = 0; j < restaurant.price_range; j++)
             $(priceRange).append(createIcon("usd"));
 
         $(stackElement).append(priceRange);
@@ -427,9 +427,14 @@ $(document).ready(function() {
         return newIcon;
     }
 
-    function showModal(header, content){
+    function showModal(header, content) {
         $("#modal-header").text(header);
         $("#modal-content").text(content);
         $("#modal-message").modal('open');
     }
+
+    $(document).ready(function() {
+        $('.parallax').parallax();
+    });
+
 });
