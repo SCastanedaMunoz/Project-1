@@ -66,6 +66,7 @@ $(document).ready(function() {
             $("#distance").val(appData.lastMileCount);
             $("#cuisines").val(appData.lastCuisines);
             $("#food_type").val(appData.lastType);
+            $("#food_count").val(appData.lastRestCount);
             getCityByName(appData.lastCityName);
         }
 
